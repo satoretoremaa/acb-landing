@@ -126,6 +126,7 @@ a, .a-like {
 
 button {
     user-select: None;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .spinner {
