@@ -116,67 +116,54 @@ class CarouselBlock extends HTMLElement {
 
         this._halfTransitionTime = time;
 
+        this._images.forEach(img => {
+            img.style.willChange = 'transform, opacity, filter';
+            img.style.transition = `z-index 0ms linear ${this._halfTransitionTime}ms`
+        });
+
         const rightButton = this.querySelector('.right');
         const leftButton = this.querySelector('.left');
 
-        rightButton.addEventListener('click', () => {
-            if (!this._isAnimating) {
-                this._currentAngleIndex++;
-                this._isAnimating = true;
-                this._updateMotion();
-                setTimeout(() => this._isAnimating = false, this._halfTransitionTime * 2);
-            }
-        });
+        rightButton.addEventListener('click', () => this._step(1));
 
-        leftButton.addEventListener('click', () => {
-            if (!this._isAnimating) {
-                this._currentAngleIndex--;
-                this._isAnimating = true;
-                this._updateMotion();
-                setTimeout(() => this._isAnimating = false, this._halfTransitionTime * 2);
-            }
-        });
+        leftButton.addEventListener('click', () => this._step(-1));
 
         this._handleSwipe();
     }
 
+    _step(direction) {
+        if (this._isAnimating) return;
+        this._currentAngleIndex += direction;
+        this._isAnimating = true;
+        this._updateMotion();
+
+        setTimeout(() => {
+            this._isAnimating = false;
+        }, this._halfTransitionTime * 2);
+    }
+
     _handleSwipe() {
         let startX = 0;
-        let endX = 0;
         const THRESHOLD = 50;
 
         this.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
-        });
+        }, { passive: true });
 
         this.addEventListener('touchend', (e) => {
-            endX = e.changedTouches[0].clientX;
+            const endX = e.changedTouches[0].clientX;
             const distance = endX - startX;
 
             if (Math.abs(distance) >= THRESHOLD) {
-                if (distance > 0) {
-                    if (!this._isAnimating) {
-                        this._currentAngleIndex--;
-                        this._isAnimating = true;
-                        this._updateMotion();
-                        setTimeout(() => this._isAnimating = false, this._halfTransitionTime * 2);
-                    }
-                } else {
-                    if (!this._isAnimating) {
-                        this._currentAngleIndex++;
-                        this._isAnimating = true;
-                        this._updateMotion();
-                        setTimeout(() => this._isAnimating = false, this._halfTransitionTime * 2);
-                    }
-                }
+                this._step(distance > 0 ? -1 : 1);
             }
-        })
+        }, { passive: true });
     }
 
     _initObserver() {
         const options = {
             root: null,
-            rootMargin: '-50% 0px -50% 0px',
+            rootMargin: '-30% 0px -30% 0px',
             threshold: 0,
         };
 
@@ -200,8 +187,8 @@ class CarouselBlock extends HTMLElement {
         this._titleHeader.setAttribute('title', escapeHTML(newHeader));
         this._titleContent.setAttribute('title', escapeHTML(newContent));
         setTimeout(() => {
-            this._titleHeader.innerHTML = escapeHTML(newHeader);
-            this._titleContent.innerHTML = escapeHTML(newContent);
+            this._titleHeader.textContent = newHeader;
+            this._titleContent.textContent = newContent;
             this._titleHeader.style.opacity = '0.65';
             this._titleContent.style.opacity = '0.33';
         }, this._halfTransitionTime);
@@ -244,41 +231,55 @@ class CarouselBlock extends HTMLElement {
 
     _updateMotion() {
         const totalItems = this._images.length;
+        let activeIndex = -1;
 
         this._images.forEach((image, index) => {
 
-            let diff = index - this._currentAngleIndex;
+            const diff = index - this._currentAngleIndex;
 
             // relative index (from 0): this converts 0 1 2 3 4 5 6 -> 0 1 2 3 -3 -2 -1
             let angleIndex = (((diff + Math.floor(totalItems / 2)) % totalItems) + totalItems) % totalItems - Math.floor(totalItems / 2);
 
-            if (angleIndex > Math.ceil((this._size - 1) / 2 ) || angleIndex < -Math.floor( (this._size - 1) / 2 )) {
+            if (angleIndex > Math.ceil((this._size - 1) / 2) || angleIndex < -Math.floor((this._size - 1) / 2)) {
                 angleIndex = Math.ceil(this._size / 2);
                 // the most distant element for N angles is ceil[N/2]
             }
 
+            const isFront = !this._isNotFrontPicture(angleIndex);
+            image.style.zIndex = `${this._getZIndex(angleIndex)}`;
+
+            if (isFront) {
+                activeIndex = index;
+            }
+
+
             image.style.transition = `transform
-                                      ${this._halfTransitionTime*2}ms
+                                      ${this._halfTransitionTime * 2}ms
                                       ${this._getTransitionFunction(angleIndex)},
                                       
                                       filter
-                                      ${this._halfTransitionTime*2}ms
-                                      linear`;
+                                      ${this._halfTransitionTime * 2}ms
+                                      linear,
+                                      
+                                      z-index
+                                      0ms
+                                      linear
+                                      ${this._halfTransitionTime}ms`;
 
             image.style.transform = `translate(${this._getPosition(angleIndex, 35)}%)
                                      scale(${this._getScale(angleIndex)})`;
 
             image.style.filter = `grayscale(${this._isNotFrontPicture(angleIndex)})`;
+        });
 
-            if (!this._isNotFrontPicture(angleIndex)) {
-                const imageObject = this._content[index];
-                this._changeTitle(imageObject.title, imageObject.description);
-                this._radios.forEach((radio) => {radio.classList.remove('active')});
-                this._radios[index].classList.add('active');
-            }
+        if ((activeIndex !== -1) && (this._content[activeIndex])) {
+            const imageObject = this._content[activeIndex];
+            this._changeTitle(imageObject.title, imageObject.description);
 
-            setTimeout(() => image.style.zIndex = `${this._getZIndex(angleIndex)}`, this._halfTransitionTime);
-        })
+            this._radios.forEach((radio, idx) => {
+                radio.classList.toggle('active', idx === activeIndex);
+            });
+        }
     }
 }
 customElements.define('carousel-block', CarouselBlock);
