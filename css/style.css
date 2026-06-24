@@ -102,6 +102,7 @@ p, .p-like {
 }
 
 a, .a-like {
+    -webkit-tap-highlight-color: transparent;
     color: inherit;
     text-decoration: underline;
     cursor: pointer;
