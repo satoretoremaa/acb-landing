@@ -1,0 +1,22 @@
+[
+    {
+        "linkText": "About us",
+        "linkHref": "404.html"
+    },
+    {
+        "linkText": "Contact us",
+        "linkHref": "404.html"
+    },
+    {
+        "linkText": "Info",
+        "linkHref": "404.html"
+    },
+    {
+        "linkText": "Placeholders",
+        "linkHref": "404.html"
+    },
+    {
+        "linkText": "Main",
+        "linkHref": "index.html"
+    }
+]

@@ -1,0 +1,26 @@
+[
+    {
+        "imageSrc": "/img/quotes/1.png",
+        "imageTitle": "Title",
+        "buttonUrl": "404.html",
+        "buttonText": "Click the button",
+        "title": "Sound recording",
+        "description": "<p class='semi-trans'>Multitrack recording allows you to record each instrument individually, in good quality and on a separate microphone, but combining the resulting tracks becomes a difficult task.<p class='semi-trans'>For us everything begins in the recording studio, where the artist comes with his material.</p>"
+    },
+    {
+        "imageSrc": "/img/quotes/2.png",
+        "imageTitle": "Title",
+        "buttonUrl": "404.html",
+        "buttonText": "Button",
+        "title": "Another illustrated block",
+        "description": "<p class='semi-trans'>All this will affect key aspects of the future song sound, so, cost of the mistake here can be huge. It's important to keep in mind physics of sound and even some computer sciences concepts, as sampling rate and bitrate. Only after these long preparations the recording follows.</p>"
+    },
+    {
+        "imageSrc": "/img/landing/3.jpg",
+        "imageTitle": "Title",
+        "buttonUrl": "404.html",
+        "buttonText": "Button (wow)",
+        "description": "<p class='semi-trans'>Mixing has become a necessary stage in music production since the widespread adoption of multitrack sound recording in the 1950s. Before this, it was common practice to record compositions on one microphone in one take, which affected the sound quality significantly.</p>",
+        "title": "Something about 1950s"
+    }
+]

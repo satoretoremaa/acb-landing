@@ -1,0 +1,29 @@
+{
+    "title": "Register",
+    "submitTitle": "Register",
+    "backgroundSrc": "/img/landing/1.jpg",
+
+    "requiredFields": [
+        {
+            "placeholder": "required field",
+            "name": "reqField"
+        }
+    ],
+
+    "optionalFields": [
+        {
+            "placeholder": "optional field",
+            "name": "optField"
+        }
+    ],
+
+    "passwordField": true,
+    "emailField": true,
+
+    "checkboxes": [
+        {
+            "label": "I want to receive some nonsense on my e-mail",
+            "name": "notifications"
+        }
+    ]
+}

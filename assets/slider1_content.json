@@ -1,0 +1,42 @@
+[
+    {
+        "imageUrl": "/img/landing/1.jpg",
+        "buttonUrl": "404.html",
+        "buttonText": "Learn more",
+        "dateText": "15.06.2025",
+        "headerText": "Here&rsquo;s<br>the header",
+        "subheaderText": "It can be rather unique if you really want it"
+    },
+    {
+        "imageUrl": "/img/landing/2.jpg",
+        "buttonUrl": "404.html",
+        "buttonText": "Learn more",
+        "dateText": "15.06.2025",
+        "headerText": "Another<br>placeholder",
+        "subheaderText": "Here is some description for it"
+    },
+    {
+        "imageUrl": "/img/landing/3.jpg",
+        "buttonUrl": "404.html",
+        "buttonText": "Learn more",
+        "dateText": "15.06.2025",
+        "headerText": "The infamous<br>New Airport",
+        "subheaderText": "No one lives here voluntarily"
+    },
+    {
+        "imageUrl": "/img/landing/4.jpg",
+        "buttonUrl": "404.html",
+        "buttonText": "Forget",
+        "dateText": "15.06.2025",
+        "headerText": "Even worse<br>neighbourhood",
+        "subheaderText": "It&rsquo;s the perfect moment to run away"
+    },
+    {
+        "imageUrl": "/img/landing/5.jpg",
+        "buttonUrl": "404.html",
+        "buttonText": "Learn more",
+        "dateText": "15.06.2025",
+        "headerText": "Smolensk<br>down the hill",
+        "subheaderText": "One more beautiful place for this slider"
+    }
+]
