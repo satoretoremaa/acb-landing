@@ -258,7 +258,7 @@ class CarouselBlock extends HTMLElement {
             image.style.transform = `translate(${this._getPosition(angleIndex, 35)}%)
                                      scale(${this._getScale(angleIndex)})`;
 
-            image.style.filter = `grayscale(${!this._isFrontPicture(angleIndex)})`;
+            image.style.filter = `grayscale(${this._isFrontPicture(angleIndex) ? 0 : 1})`;
         });
 
         if ((activeIndex !== -1) && (this._content[activeIndex])) {
