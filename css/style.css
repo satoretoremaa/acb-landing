@@ -10,12 +10,12 @@
 
 :root {
     --bg: white;
-    --light-subaccent: #628792;
-    --dark-subaccent: #4d7499;
-    --accent: #3c8e62;
-    --pale-accent: #7abfa1;
+    --light-subaccent: #ff90b4;
+    --dark-subaccent: #ff7e7e;
+    --accent: #ffad2c;
+    --pale-accent: #ffd36c;
     --light: #addae7;
-    --dark: #1A1A1C;
+    --dark: #1A1A1A;
     --error: #e9527a;
 
     color: var(--dark);
@@ -816,6 +816,7 @@ header {
 
             &:valid {
                 border: var(--light-subaccent) solid 3px;
+                background: none;
                 outline: none;
             }
 
@@ -905,6 +906,10 @@ header {
         @media (max-width: 600px) {
             padding: 40px 0;
             border: none;
+
+            &:valid {
+                border: none;
+            }
 
             &:active {
                 transform: none;
