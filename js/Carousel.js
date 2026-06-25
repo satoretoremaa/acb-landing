@@ -212,12 +212,12 @@ class CarouselBlock extends HTMLElement {
         return 0.25 * (Math.cos(angleIndex * this._angleDiv) + 3);
     }
 
-    _isNotFrontPicture(angleIndex) {
-        return (angleIndex % this._size) ? 1 : 0;
+    _isFrontPicture(angleIndex) {
+        return (angleIndex % this._size) ? 0 : 1;
     }
 
     _getTransitionFunction(angleIndex) {
-
+        
         const distance = Math.abs(angleIndex);
 
         if (distance === 0) {
@@ -245,31 +245,20 @@ class CarouselBlock extends HTMLElement {
                 // the most distant element for N angles is ceil[N/2]
             }
 
-            const isFront = !this._isNotFrontPicture(angleIndex);
             image.style.zIndex = `${this._getZIndex(angleIndex)}`;
 
-            if (isFront) {
+            if (this._isFrontPicture(angleIndex)) {
                 activeIndex = index;
             }
 
-
-            image.style.transition = `transform
-                                      ${this._halfTransitionTime * 2}ms
-                                      ${this._getTransitionFunction(angleIndex)},
-                                      
-                                      filter
-                                      ${this._halfTransitionTime * 2}ms
-                                      linear,
-                                      
-                                      z-index
-                                      0ms
-                                      linear
-                                      ${this._halfTransitionTime}ms`;
+            image.style.transition = `transform ${this._halfTransitionTime * 2}ms ${this._getTransitionFunction(angleIndex)},
+                                      filter ${this._halfTransitionTime * 2}ms linear,
+                                      z-index 0ms linear ${this._halfTransitionTime}ms`;
 
             image.style.transform = `translate(${this._getPosition(angleIndex, 35)}%)
                                      scale(${this._getScale(angleIndex)})`;
 
-            image.style.filter = `grayscale(${this._isNotFrontPicture(angleIndex)})`;
+            image.style.filter = `grayscale(${!this._isFrontPicture(angleIndex)})`;
         });
 
         if ((activeIndex !== -1) && (this._content[activeIndex])) {
