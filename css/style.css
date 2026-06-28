@@ -4,7 +4,6 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    overscroll-behavior: none;
     scroll-behavior: smooth;
 }
 
@@ -21,6 +20,7 @@
     color: var(--dark);
     background-color: var(--bg);
     font-family: "Noto Sans", sans-serif;
+    overscroll-behavior: none;
 
     --extra: 80px;
     --huge: 56px;
