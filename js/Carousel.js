@@ -1,6 +1,10 @@
 import {escapeHTML} from "./utils.js";
 
 class CarouselBlock extends HTMLElement {
+    // THE LATEST UPDATE:
+    // image filter optimized: instead of animating matrix-based property filter: grayscale, the overlay black&white image added.
+    // Now we're animating its opacity, which requires much less performance resources
+
     constructor() {
         super();
         this._currentAngleIndex = 0;
@@ -65,7 +69,12 @@ class CarouselBlock extends HTMLElement {
                     <h3>${escapeHTML(this._header)}</h3>
                     <div class="images-wrapper">
                         ${this._content.map((item) => (
-                            `<img draggable="false" class="light" src=${escapeHTML(item.source)}/>`
+                            `
+                            <div class="image">
+                                <img draggable="false" class="light" alt="${escapeHTML(item.title)}" src=${escapeHTML(item.source)}/>
+                                <img draggable="false" class="light overlay" alt="" aria-hidden="true" src=${escapeHTML(item.source)}/>
+                            </div>
+                            `
                         )).join('')}
                     </div>
 
@@ -101,34 +110,28 @@ class CarouselBlock extends HTMLElement {
     _applyBehavior(time, size) {
         // size is an integer between 4 and 8
 
-        this._images = this.querySelectorAll('img');
+        this._images = this.querySelectorAll('.image');
         this._radios = this.querySelectorAll('.radio');
-
         this._title = this.querySelector('.title');
         this._titleHeader = this._title.querySelector('h4');
         this._titleContent = this._title.querySelector('p');
-        this._titleHeader.style.transition = `opacity ${time}ms ease-in-out`;
-        this._titleContent.style.transition = `opacity ${time}ms ease-in-out`;
 
         this._size = size;
         this._angleDiv = 2 * Math.PI/this._size;
-        this._updateMotion();
-
         this._halfTransitionTime = time;
 
-        this._images.forEach(img => {
-            img.style.willChange = 'transform, opacity, filter';
-            img.style.transition = `z-index 0ms linear ${this._halfTransitionTime}ms`
-        });
+        this._titleHeader.style.transition = `opacity ${time}ms ease-in-out`;
+        this._titleContent.style.transition = `opacity ${time}ms ease-in-out`;
+        this._images.forEach(image => image.style.transition = `z-index 0ms linear ${this._halfTransitionTime}ms`);
 
         const rightButton = this.querySelector('.right');
         const leftButton = this.querySelector('.left');
 
-        rightButton.addEventListener('click', () => this._step(1));
-
-        leftButton.addEventListener('click', () => this._step(-1));
-
+        this._updateMotion();
         this._handleSwipe();
+
+        rightButton.addEventListener('click', () => this._step(1));
+        leftButton.addEventListener('click', () => this._step(-1));
     }
 
     _step(direction) {
@@ -236,6 +239,7 @@ class CarouselBlock extends HTMLElement {
         this._images.forEach((image, index) => {
 
             const diff = index - this._currentAngleIndex;
+            const overlay = image.querySelector('.overlay');
 
             // relative index (from 0): this converts 0 1 2 3 4 5 6 -> 0 1 2 3 -3 -2 -1
             let angleIndex = (((diff + Math.floor(totalItems / 2)) % totalItems) + totalItems) % totalItems - Math.floor(totalItems / 2);
@@ -247,9 +251,8 @@ class CarouselBlock extends HTMLElement {
 
             image.style.zIndex = `${this._getZIndex(angleIndex)}`;
 
-            if (this._isFrontPicture(angleIndex)) {
-                activeIndex = index;
-            }
+            if (this._isFrontPicture(angleIndex)) activeIndex = index;
+
 
             image.style.transition = `transform ${this._halfTransitionTime * 2}ms ${this._getTransitionFunction(angleIndex)},
                                       filter ${this._halfTransitionTime * 2}ms linear,
@@ -258,7 +261,7 @@ class CarouselBlock extends HTMLElement {
             image.style.transform = `translate(${this._getPosition(angleIndex, 35)}%)
                                      scale(${this._getScale(angleIndex)})`;
 
-            image.style.filter = `grayscale(${this._isFrontPicture(angleIndex) ? 0 : 1})`;
+            overlay.style.opacity = +(!this._isFrontPicture(angleIndex));
         });
 
         if ((activeIndex !== -1) && (this._content[activeIndex])) {

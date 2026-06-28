@@ -986,6 +986,7 @@ header {
 
             & * {
                 opacity: 0.33;
+                will-change: opacity;
                 transition: opacity 0.5s ease, filter 0.5s ease;
             }
 
@@ -1016,9 +1017,7 @@ header {
                 width: 75vw;
             }
 
-            & img {
-                user-select: none;
-
+            & .image {
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -1029,9 +1028,29 @@ header {
                 border-radius: 16px;
                 border: var(--bg) solid 6px;
 
-                object-fit: cover;
-                object-position: center center;
-                filter: grayscale(1);
+                overflow: clip;
+
+                will-change: transform;
+
+                & img {
+
+                    user-select: none;
+
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+
+                    height: 100%;
+                    width: 100%;
+
+                    object-fit: cover;
+                    object-position: center center;
+
+                    &.overlay {
+                        will-change: opacity;
+                        filter: grayscale(1);
+                    }
+                }
             }
         }
 
@@ -1052,13 +1071,16 @@ header {
                 cursor: pointer;
                 padding: 0 8px;
                 flex-shrink: 0;
-                transition: background 0.25s ease;
+
+                will-change: background-color;
+                transition: background-color 0.25s ease;
 
                 svg {
                     height: 100%;
                     stroke: var(--bg);
                     opacity: 0.33;
                     stroke-width: 4px;
+                    will-change: stroke, opacity;
                     transition: stroke 0.25s ease, opacity 0.25s ease;
                 }
 
@@ -1102,7 +1124,8 @@ header {
                             border-radius: 50%;
                             background-color: var(--bg);
                             opacity: 0.33;
-                            transition: background-color 0.25s ease, opacity 0.25s ease, scale 0.25s ease;
+                            will-change: background-color, opacity, transform;
+                            transition: background-color 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
                         }
 
                         &.active::before {
