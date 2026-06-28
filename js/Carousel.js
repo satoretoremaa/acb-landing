@@ -70,9 +70,9 @@ class CarouselBlock extends HTMLElement {
                     <div class="images-wrapper">
                         ${this._content.map((item) => (
                             `
-                            <div class="image">
-                                <img draggable="false" class="light" alt="${escapeHTML(item.title)}" src=${escapeHTML(item.source)}/>
-                                <img draggable="false" class="light overlay" alt="" aria-hidden="true" src=${escapeHTML(item.source)}/>
+                            <div class="dark image">
+                                <img draggable="false" alt="${escapeHTML(item.title)}" src=${escapeHTML(item.source)}/>
+                                <img draggable="false" class="overlay" alt="" aria-hidden="true" src=${escapeHTML(item.source)}/>
                             </div>
                             `
                         )).join('')}
